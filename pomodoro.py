@@ -19,7 +19,7 @@ def wait_for_permission_to_run() -> None:
         StopPomodoroException: raised when user wants to end pomodoro
         execution.
     """
-    raise StopPomodoroException
+    ...
 
 
 def run_focus_time(pomodoro_time: int) -> datetime:

@@ -1,9 +1,6 @@
 from argparse import Namespace, ArgumentParser
 from datetime import datetime
-
-
-class StopPomodoroException(Exception):
-    ...
+from exceptions.stop_pomodoro_exception import StopPomodoroException
 
 
 def get_args() -> ArgumentParser:

@@ -1,3 +1,4 @@
+import time
 from argparse import Namespace, ArgumentParser
 from datetime import datetime
 from exceptions.stop_pomodoro_exception import StopPomodoroException
@@ -38,7 +39,11 @@ def run_focus_time(pomodoro_time: int) -> datetime:
     Returns:
         datetime: pomodoro start time
     """
-    ...
+    print('Running pomodoro...')
+    start_time = datetime.now()
+    time.sleep(pomodoro_time)
+    print('Pomodoro finished')
+    return start_time
 
 
 def record_progress(finished_pomodoros: int, start_time: datetime) -> None:
@@ -74,7 +79,11 @@ def run_break(break_time: int) -> None:
     Args:
         break_time (int): break length in seconds
     """
-    ...
+    print('Running break...')
+    start_time = datetime.now()
+    time.sleep(break_time)
+    print('Break finished')
+    return start_time
 
 
 def show_progress(pomodoro_settings: dict, finished_pomodoros: int) -> None:

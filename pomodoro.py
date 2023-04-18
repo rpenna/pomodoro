@@ -19,7 +19,14 @@ def wait_for_permission_to_run() -> None:
         StopPomodoroException: raised when user wants to end pomodoro
         execution.
     """
-    ...
+    print(
+        """
+        Type next step: "r" or "run" to run, "s" or "stop" to exit pomodoro
+        """
+    )
+    step = input()
+    if step.lower() in ('stop', 's'):
+        raise StopPomodoroException
 
 
 def run_focus_time(pomodoro_time: int) -> datetime:

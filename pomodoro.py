@@ -33,7 +33,7 @@ def run_focus_time(pomodoro_time: int) -> datetime:
     """Run focus time (pomodoro), showing progression bar and pomodoro stats.
 
     Args:
-        pomodoro_time (int): Pomodoro duration (minutes)
+        pomodoro_time (int): Pomodoro duration (seconds)
 
     Returns:
         datetime: pomodoro start time
@@ -63,16 +63,16 @@ def get_break_duration(
         breaks duration)
 
     Returns:
-        int: next break duration (minutes)
+        int: next break duration (seconds)
     """
     ...
 
 
-def run_break(minutes: int) -> None:
+def run_break(break_time: int) -> None:
     """Run break, showing progress bar and pomodoro stats
 
     Args:
-        minutes (int): break length in minutes
+        break_time (int): break length in seconds
     """
     ...
 

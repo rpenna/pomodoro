@@ -21,9 +21,12 @@ def test_run_break_given_break_time_when_run_then_it_should_take_the_time_durati
 def test_run_pomodoro_given_pomodoro_execution_when_executed_then_shows_message_to_user(capfd):
     run_focus_time(1)
     out, err = capfd.readouterr()
-    assert out.startswith('Running pomodoro...')
+    assert out.replace('\n', '').startswith('Running pomodoro...')
+    assert out.replace('\n', '').endswith('Pomodoro finished')
 
 def test_run_break_given_break_execution_when_executed_then_shows_message_to_user(capfd):
-    run_focus_time(1)
+    run_break(1)
     out, err = capfd.readouterr()
-    assert out.startswith('Running break...')
+    message = out.replace('\n', '')
+    assert message.startswith('Running break...')
+    assert message.endswith('Break finished')

@@ -5,6 +5,13 @@ from tqdm import tqdm
 from exceptions.stop_pomodoro_exception import StopPomodoroException
 
 
+DESCRIPTIONS = {
+    'pomodoro': 'Focus time',
+    'long_break': 'Long break',
+    'short_break': 'Short break'
+}
+
+
 def get_args() -> Namespace:
     """Read arguments and define pomodoro settings.
 
@@ -72,20 +79,20 @@ def sleep_with_progress_bar(sleep_time: float, description: str = '') -> None:
         time.sleep(1)
 
 
-def run_focus_time(pomodoro_time: int) -> datetime:
-    """Run focus time (pomodoro), showing progression bar and pomodoro stats.
+def run(interval: int, type: str) -> datetime:
+    """Run focus time (pomodoro), showing progression bar and stats.
 
     Args:
-        pomodoro_time (int): Pomodoro duration (minutes)
+        pomodoro_time (int): Pomodoro duration (seconds)
 
     Returns:
         datetime: pomodoro start time
     """
-    print('Running pomodoro...')
-    one_percent_interval = (pomodoro_time * 60)
+    description = DESCRIPTIONS[type]
+    print(f'Running {description.lower()}...')
     start_time = datetime.now()
-    sleep_with_progress_bar(one_percent_interval)
-    print('Pomodoro finished')
+    sleep_with_progress_bar(interval, description)
+    print(f'{description} finished')
     return start_time
 
 
@@ -116,20 +123,6 @@ def get_break_duration(
     ...
 
 
-def run_break(break_time: int) -> None:
-    """Run break, showing progress bar and pomodoro stats
-
-    Args:
-        break_time (int): break duration in minutes
-    """
-    print('Running break...')
-    one_percent_interval = (break_time * 60)
-    start_time = datetime.now()
-    sleep_with_progress_bar(one_percent_interval)
-    print('Break finished')
-    return start_time
-
-
 def show_progress(pomodoro_settings: dict, finished_pomodoros: int) -> None:
     """Print pomodoro stats
 
@@ -140,21 +133,56 @@ def show_progress(pomodoro_settings: dict, finished_pomodoros: int) -> None:
     ...
 
 
+def get_duration(seconds: int) -> int:
+    """Convert seconds to minutes.
+
+    Args:
+        seconds (int): seconds to be converted
+
+    Returns:
+        int: result in minutes
+    """
+    return 0 if seconds < 0 else seconds * 60
+
+
+def get_next_break(counter: int, settings: dict) -> dict:
+    """Define the next break according to number of pomodoros finished and
+    settings defined by user.
+
+    Args:
+        counter (int): number of pomodoros finished
+        settings (dict): pomodoro settings
+
+    Returns:
+        dict: description and duration of next break
+    """
+    if counter % settings['buffer_length'] == 0:
+        return {
+            'description': 'long_break',
+            'duration': get_duration(settings['long_break_time'])
+        }
+    return {
+        'description': 'short_break',
+        'duration': get_duration(settings['short_break_time'])
+    }
+
+
 def start_pomodoro_counter(pomodoro_settings: dict) -> None:
     finished_pomodoros = 0
     quit_pomodoro = False
+    focus_duration = get_duration(pomodoro_settings['pomodoro_time'])
     try:
         while not quit_pomodoro:
             wait_for_permission_to_run()
-            start_time = run_focus_time(pomodoro_settings['pomodoro_time'])
+            start_time = run(focus_duration, 'pomodoro')
             finished_pomodoros += 1
-            break_duration = get_break_duration(
+            record_progress(finished_pomodoros, start_time)
+            next_break = get_next_break(
                 finished_pomodoros,
                 pomodoro_settings,
             )
-            record_progress(finished_pomodoros, start_time)
             wait_for_permission_to_run()
-            run_break(break_duration)
+            run(next_break['duration'], next_break['description'])
     except (StopPomodoroException, KeyboardInterrupt):
         show_progress(pomodoro_settings, finished_pomodoros)
 

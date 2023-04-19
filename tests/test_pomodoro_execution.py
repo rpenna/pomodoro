@@ -6,7 +6,8 @@ def test_run_pomodoro_given_pomodoro_time_when_run_then_it_should_take_the_time_
     before = datetime.now()
     start = run_focus_time(1)
     after = datetime.now()
-    assert start > before and after > start
+    assert start > before
+    assert after > start
     duration = after - start
     assert duration.seconds == 1
 
@@ -14,7 +15,8 @@ def test_run_break_given_break_time_when_run_then_it_should_take_the_time_durati
     before = datetime.now()
     start = run_break(1)
     after = datetime.now()
-    assert start > before and after > start
+    assert start > before
+    assert after > start
     duration = after - start
     assert duration.seconds == 1
 

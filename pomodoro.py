@@ -1,6 +1,7 @@
 import time
 from argparse import Namespace, ArgumentParser
 from datetime import datetime
+from tqdm import tqdm
 from exceptions.stop_pomodoro_exception import StopPomodoroException
 
 
@@ -30,6 +31,11 @@ def wait_for_permission_to_run() -> None:
         raise StopPomodoroException
 
 
+def sleep_with_progress_bar(sleep_time: float) -> None:
+    for _ in tqdm(range(100)):
+        time.sleep(sleep_time)
+
+
 def run_focus_time(pomodoro_time: int) -> datetime:
     """Run focus time (pomodoro), showing progression bar and pomodoro stats.
 
@@ -40,8 +46,9 @@ def run_focus_time(pomodoro_time: int) -> datetime:
         datetime: pomodoro start time
     """
     print('Running pomodoro...')
+    one_percent_interval = pomodoro_time / 100
     start_time = datetime.now()
-    time.sleep(pomodoro_time)
+    sleep_with_progress_bar(one_percent_interval)
     print('Pomodoro finished')
     return start_time
 
@@ -80,8 +87,9 @@ def run_break(break_time: int) -> None:
         break_time (int): break length in seconds
     """
     print('Running break...')
+    one_percent_interval = break_time / 100
     start_time = datetime.now()
-    time.sleep(break_time)
+    sleep_with_progress_bar(one_percent_interval)
     print('Break finished')
     return start_time
 

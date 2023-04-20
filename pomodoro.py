@@ -1,6 +1,8 @@
 import time
 from argparse import Namespace, ArgumentParser
 from datetime import datetime
+from plyer import notification
+from plyer.utils import platform
 from tqdm import tqdm
 from exceptions.stop_pomodoro_exception import StopPomodoroException
 
@@ -96,29 +98,28 @@ def run(interval: int, type: str) -> datetime:
     return start_time
 
 
+def show_notification(message: str) -> None:
+    """show pop up notification for windows
+
+    Args:
+        message (str): Message to be shown
+    """
+    extension = 'ico' if platform == 'win' else 'png'
+    
+    notification.notify(
+        title='Pomodoro',
+        message=message,
+        app_name='Pomodoro',
+        app_icon=f'./img/tomato.{extension}'
+    )
+
+
 def record_progress(finished_pomodoros: int, start_time: datetime) -> None:
     """Save pomodoro stats
 
     Args:
         finished_pomodoros (int): number of pomodoros finished
         start_time (datetime): start time of last pomodoro runned
-    """
-    ...
-
-
-def get_break_duration(
-    finished_pomodoros: int,
-    pomodoro_settings: dict
-) -> int:
-    """Calculates next break duration
-
-    Args:
-        finished_pomodoros (int): number of finished pomodoros
-        pomodoro_settings (dict): pomodoro settings (needs buffer length and
-        breaks duration)
-
-    Returns:
-        int: next break duration (seconds)
     """
     ...
 
@@ -175,6 +176,7 @@ def start_pomodoro_counter(pomodoro_settings: dict) -> None:
         while not quit_pomodoro:
             wait_for_permission_to_run()
             start_time = run(focus_duration, 'pomodoro')
+            show_notification('Time to take a break :)')
             finished_pomodoros += 1
             record_progress(finished_pomodoros, start_time)
             next_break = get_next_break(
@@ -183,6 +185,7 @@ def start_pomodoro_counter(pomodoro_settings: dict) -> None:
             )
             wait_for_permission_to_run()
             run(next_break['duration'], next_break['description'])
+            show_notification('Time to focus!')
     except (StopPomodoroException, KeyboardInterrupt):
         show_progress(pomodoro_settings, finished_pomodoros)
 

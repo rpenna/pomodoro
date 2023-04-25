@@ -76,7 +76,7 @@ def sleep_with_progress_bar(sleep_time: float, description: str = '') -> None:
     """
     minutes = str(sleep_time // 60).zfill(2)
     seconds = str(sleep_time % 60).zfill(2)
-    bar_format = '{l_bar}{bar:30}| [{elapsed}/%s:%s]' % (minutes, seconds)
+    bar_format = '{l_bar}{bar:50}| [{elapsed}/%s:%s]' % (minutes, seconds)
     for _ in tqdm(range(sleep_time), desc=description, bar_format=bar_format):
         time.sleep(1)
 

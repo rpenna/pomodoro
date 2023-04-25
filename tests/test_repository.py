@@ -34,9 +34,9 @@ def test_save_pomodoro_given_a_pomodoro_when_saved_then_it_should_save_a_new_lin
     pomodoro_id = repo.generate_new_pomodoro()
     repo.save_pomodoro(pomodoro_id, pomodoro_info)
     pomodoros = repo.get_pomodoros(pomodoro_id)
-    assert pomodoros[-1].pomodoro_id == pomodoro_id
-    assert pomodoros[-1].start_time == pomodoro_info['start_time']
-    assert pomodoros[-1].end_time == pomodoro_info['end_time']
+    assert pomodoros[-1]['pomodoro_id'] == pomodoro_id
+    assert pomodoros[-1]['start_time'] == pomodoro_info['start_time']
+    assert pomodoros[-1]['end_time'] == pomodoro_info['end_time']
 
 
 @pytest.mark.parametrize(

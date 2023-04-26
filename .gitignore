@@ -54,3 +54,6 @@ docs/_build/
 /venv
 pip.ini
 pyvenv.cfg
+
+#sqlite3 db
+*.db

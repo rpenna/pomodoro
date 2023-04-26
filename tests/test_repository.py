@@ -18,8 +18,8 @@ def repo_controller(setup_repo):
 @pytest.fixture
 def pomodoro_info():
     return {
-        'start_time': datetime(2023, 1, 1, 12),
-        'end_time': datetime(2023, 1, 1, 12, 25)
+        'start_time': datetime(2023, 1, 1, 12, 0, 0, 1),
+        'end_time': datetime(2023, 1, 1, 12, 25, 0, 1)
     }
 
 

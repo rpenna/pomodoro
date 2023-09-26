@@ -104,14 +104,17 @@ def show_notification(message: str) -> None:
     Args:
         message (str): Message to be shown
     """
-    extension = 'ico' if platform == 'win' else 'png'
-    
-    notification.notify(
-        title='Pomodoro',
-        message=message,
-        app_name='Pomodoro',
-        app_icon=f'./img/tomato.{extension}'
-    )
+    try:
+        extension = 'ico' if platform == 'win' else 'png'
+        
+        notification.notify(
+            title='Pomodoro',
+            message=message,
+            app_name='Pomodoro',
+            app_icon=f'./img/tomato.{extension}'
+        )
+    except NotImplementedError:
+        print('Notifications not available')
 
 
 def record_progress(finished_pomodoros: int, start_time: datetime) -> None:
